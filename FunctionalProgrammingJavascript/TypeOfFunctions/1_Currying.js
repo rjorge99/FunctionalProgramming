@@ -42,7 +42,7 @@ const messages = {
     f: 'Not good'
 };
 
-const getLetterGrade = (grade) => {
+const getLetterGrade = (points) => {
     if (points >= 90) {
         return 'a';
     } else if (points >= 80) {
