@@ -68,7 +68,6 @@ function update(msg, model) {
             return updateModel(model);
         }
         case MSGS.DELETE_MEAL: {
-            const { id } = msg;
             const meals = R.filter((meal) => meal.id !== msg.id, model.meals);
             return { ...model, meals };
         }
