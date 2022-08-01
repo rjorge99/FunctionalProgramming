@@ -62,8 +62,9 @@ function update(msg, model) {
         }
         case MSGS.SAVE_MEAL: {
             const { editId } = model;
-            console.log(editId);
-            const updateModel = editId ? edit : add;
+            const updateModel = editId != null ? edit : add;
+
+            console.log(updateModel);
             return updateModel(model);
         }
         case MSGS.DELETE_MEAL: {
