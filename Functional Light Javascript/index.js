@@ -15,6 +15,23 @@
 //             return nextCurried(args);
 //         }
 //     })([]);
+// const uncurry =
+//     (fn) =>
+//     (...args) => {
+//         var ret = fn;
+//         for (let arg of args) {
+//             ret = ret(arg);
+//         }
+//         return ret;
+//     };
+// const not =
+//     (predicate) =>
+//     (...args) =>
+//         !predicate(...args);
+// const when =
+//     (predicate, fn) =>
+//     (...args) =>
+//         predicate(...args) ? fn(...args) : undefined;
 
 // --------------------------------------------------------------------------------------------------------------------
 // The utility will send multiple arguments to that function. But you may only want the function to receive a single argument.
@@ -192,3 +209,72 @@ function looseCurry(fn, arity = fn.length) {
 
 // var curriedSum = looseCurry(sum, 5);
 // curriedSum(1)(2, 3)(4, 5);
+
+// --------------------------------------------------------------------------------------------------------------------
+// Uncurry
+function uncurry(fn) {
+    return function uncurried(...args) {
+        var ret = fn;
+        for (let arg of args) {
+            ret = ret(arg);
+        }
+        return ret;
+    };
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+// No points
+function double(x) {
+    return x * 2;
+}
+// [1, 2, 3, 4, 5].map(function mapper(v) {
+//     return double(v);
+// });
+[1, 2, 3, 4, 5].map(double);
+['1', '2', '3'].map(unary(parseInt)); // Discards the second argument of provided by the map function
+
+function output(text) {
+    console.log(text);
+}
+
+function printIf(predicated, msg) {
+    if (predicated(msg)) output(msg);
+}
+
+function isShortEnough(msg) {
+    return msg.length < 5;
+}
+
+let msg1 = 'Hello ';
+let ms2 = 'Hello World';
+
+printIf(isShortEnough, msg1); // Hello
+printIf(isShortEnough, msg2);
+
+function isLongEnough(msg) {
+    return !isShortEnough(msg);
+}
+
+printIf(isLongEnough, msg1);
+printIf(isLongEnough, msg2); // Hello World
+
+function not(predicate) {
+    return function negated(...args) {
+        return !predicate(...args);
+    };
+}
+
+// Using point free
+const isLongEnough = not(isShortEnough); // <--
+printIf(isLongEnough, msg2); // Hello World
+
+// We can express the if conditional part with a when(..) utility:
+function when(predicate, fn) {
+    return function conditional(...args) {
+        if (predicate(...args)) {
+            return fn(...args);
+        }
+    };
+}
+
+const printIf = uncurry(partialRight(when, output));
