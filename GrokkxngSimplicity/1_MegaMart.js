@@ -118,3 +118,80 @@ function set_cart_total_dom(total) {
     total;
     // ...
 }
+
+function remove_item_by_name(cart, name) {
+    return cart.filter((item) => item.name !== name);
+}
+
+function delete_handler(name) {
+    shopping_cart = remove_item_by_name(shopping_cart, name);
+    var total = calc_total(shopping_cart);
+    set_cart_total_dom(total);
+    update_shipping_icons(shopping_cart);
+    update_tax_dom(total);
+}
+
+// --------------------------------------------------
+
+// 1 - Mailing list inital code
+var mailing_list = [];
+function add_contact(email) {
+    mailing_list.push(email);
+}
+function submit_form_handler(event) {
+    var form = event.target;
+    var email = form.elements['email'].value;
+    add_contact(email);
+}
+
+// 2 - Optimizing, using  o copy-on-write form
+function add_contact(mailing_list, email) {
+    return push(mailing_list, email);
+}
+function submit_form_handler(event) {
+    var form = event.target;
+    var email = form.elements['email'].value;
+    mailing_list = add_contact(mailing_list, email);
+}
+
+function push(array, elem) {
+    return [...array, elem];
+}
+
+function setPrice(item, new_price) {
+    return objectSet(item, 'price', new_price);
+}
+
+function setQuantity(item, new_quantity) {
+    return objectSet(item, 'quantity', new_quantity);
+}
+
+function objectSet(object, key, value) {
+    return {
+        ...object,
+        [key]: value
+    };
+}
+
+function objectDelete(object, key) {
+    const o = { ...object };
+    delete o[key];
+    return o;
+}
+
+function setPriceByName(cart, name, price) {
+    const cartCopy = [...cart];
+
+    for (var i = 0; i < cartCopy.length; i++)
+        if (cartCopy[i].name === name) cartCopy[i] = setPrice(cartCopy[i], price);
+
+    return cartCopy;
+}
+
+function setQuantityByName(cart, name, quantity) {
+    const cartCopy = [...cart];
+    for (var i = 0; i < cartCopy.length; i++)
+        if (cartCopy[i].name === name) cartCopy[i] = setQuantity(cartCopy[i], quantity);
+
+    return cartCopy;
+}
