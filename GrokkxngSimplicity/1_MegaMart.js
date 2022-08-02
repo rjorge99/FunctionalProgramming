@@ -38,12 +38,20 @@ function update_tax_dom() {
 
 // 2 - Creating more testable code
 function add_item_to_cart(name, price) {
-    shopping_cart = add_item(shopping_cart, name, price);
+    var item = make_cart_item(name, price);
+    shopping_cart = add_item(shopping_cart, item);
 
     var total = calc_total(shopping_cart);
     set_cart_total_dom(total);
     update_shipping_icons(cart);
     update_tax_dom(total);
+}
+
+function make_cart_item(name, price) {
+    return {
+        name,
+        price
+    };
 }
 
 // Becomes a calculation (Pure function)
@@ -58,8 +66,12 @@ function calc_total(cart) {
 }
 
 // We dont modify the original array, we create a new one
-function add_item(cart, name, price) {
-    return [...cart, { name, price }];
+function add_item(cart, item) {
+    return add_element_last(cart, item);
+}
+
+function add_element_last(array, elem) {
+    return [...array, elem];
 }
 
 function update_tax_dom(total) {
@@ -75,7 +87,7 @@ function update_shipping_icons(cart) {
     for (var i = 0; i < buy_buttons.length; i++) {
         var button = buy_buttons[i];
         var item = button.item;
-        const newCart = add_item(cart, item.name, item.price);
+        const newCart = add_item(cart, make_cart_item(item.name, item.price));
         if (get_free_shipping(newCart)) button.show_free_shipping_icon();
         else button.hide_free_shipping_icon();
     }
