@@ -23,9 +23,9 @@ function isEven(v) {
 // const isEven = not(isOdd); // <--
 
 // Excercise:
-function output(msg) {
-    console.log(msg);
-}
+// function output(msg) {
+//     console.log(msg);
+// }
 
 // function printIf(shouldPrintIf) {
 //     return function (msg) {
@@ -45,7 +45,7 @@ const msg1 = 'Hello';
 const msg2 = msg1 + ' World';
 
 // Solution
-// const output = console.log; // depending of the javascript environment, log function requires to be called from console
+const output = console.log; // depending of the javascript environment, log function requires to be called from console
 const isLongEnough = not(isShortEnough);
 const printIf = when(output);
 
