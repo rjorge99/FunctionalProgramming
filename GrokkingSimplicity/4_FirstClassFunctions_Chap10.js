@@ -31,7 +31,7 @@ cart = setFieldByName(cart, 'shoe', 'quantity', 3);
 cart = setFieldByName(cart, 'shoe', 'shipping', 0);
 cart = setFieldByName(cart, 'shoe', 'tax', 2.34);
 
-// Execrise
+// Exercise
 function incrementFieldByName(cart, name, field) {
     var item = cart[name];
     var value = item[field];
