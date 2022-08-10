@@ -2,6 +2,7 @@
 // the problem the function signature presents should be solved
 // at the right level of detail in the body
 
+// ******************** Pattern 1: straightforward implementation ********************
 function freeTieClip(cart) {
     var hasTie = false;
     var hasTieClip = false;
@@ -58,3 +59,39 @@ function indexOfItem(cart, name) {
     }
     return null;
 }
+
+// ********************
+// Refactor
+function isInCart(cart, name) {
+    return indexOfItem(cart, name) !== null;
+}
+function setPriceByName(cart, name, price) {
+    var cartCopy = [...cart];
+    var i = indexOfItem(cart, name); // <--
+    if (i !== null) cartCopy[i] = setPrice(cartCopy[i], price);
+    return cartCopy;
+}
+
+// ********************
+// Refactor
+function setPriceByName(cart, name, price) {
+    var i = indexOfItem(cart, name);
+    if (i !== null) return arraySet(cart, i, setPrice(cart[i], price)); // <--
+    return cart;
+}
+function arraySet(array, idx, value) {
+    var copy = array.slice();
+    copy[idx] = value;
+    return copy;
+}
+
+// ******************** Pattern 2: Abstraction Barriers ********************
+// It strongly decouples code above the barrier from code at and below the barrie.
+
+// ******************** Pattern 3: Minimal Interface ********************
+// It asks us to consider where the code for new
+// features belongs. By keeping our interfaces minimal, we avoid
+// bloating our lower layers with unnecessary features.
+
+// ******************** Pattern 4: Comfortable layers ********************
+//  asks us to consider the practical side
