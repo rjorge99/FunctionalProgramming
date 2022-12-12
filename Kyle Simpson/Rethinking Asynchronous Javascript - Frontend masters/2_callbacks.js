@@ -1,1 +1,3 @@
-test('should first', () => { second })
+setTimeout(() => {
+    console.log(P)
+}, 1000);
