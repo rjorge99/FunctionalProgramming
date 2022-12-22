@@ -33,6 +33,7 @@ list = mapWithReducer(list, add1);
 list = filterWithReducer(list, isOdd);
 list.reduce(sum);
 
+// ***************************
 function mapReducer(mappingFn) {
     return function reducer(list, v) {
         list.push(mappingFn(v));
@@ -51,6 +52,7 @@ function filterReducer(predicateFn) {
 
 list.reduce(mapReducer(add1), []).reduce(filterReducer(isOdd), []).reduce(sum);
 
+// **********************************
 // Combiner and currying
 function listCombination(list, v) {
     list.push(v);
@@ -69,6 +71,7 @@ function filterReducer(predicateFn) {
 }
 list.reduce(mapReducer(add1), []).reduce(filterReducer(isOdd), []).reduce(sum);
 
+// ****************************
 // Using currying to provide the combiner
 var mapReducer = curry(2, function mapReducer(mappingFn, combinerFn) {
     return function reducer(list, v) {
